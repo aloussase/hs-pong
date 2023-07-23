@@ -1,0 +1,47 @@
+cabal-version:      2.4
+name:               hs-pong
+version:            0.1.0.0
+synopsis:           Pong game made with Specs and Raylib.
+description:
+  Nice Pong game featuring a start screen and particles
+  when game objects collide. Also, it has cool sound effects.
+
+bug-reports:        https://github.com/aloussase/hs-pong
+license:            MIT
+author:             Alexander Goussas
+maintainer:         goussasalexander@gmail.com
+copyright:          Alexander Goussas 2023
+category:           Game
+extra-source-files: README.md
+
+executable hs-pong
+  main-is:            Main.hs
+  other-modules:
+    Pong.Components
+    Pong.Entities
+    Pong.Systems.ClickHandling
+    Pong.Systems.Drawing
+    Pong.Systems.Hover
+    Pong.Systems.Initialize
+    Pong.Systems
+    Pong.Types
+
+  build-depends:
+    , apecs
+    , base      ^>=4.16.4.0
+    , h-raylib
+    , text
+
+  hs-source-dirs:     app
+  default-language:   Haskell2010
+  default-extensions:
+    DataKinds
+    FlexibleContexts
+    FlexibleInstances
+    GeneralizedNewtypeDeriving
+    MultiParamTypeClasses
+    OverloadedStrings
+    ScopedTypeVariables
+    TemplateHaskell
+    TypeApplications
+    TypeFamilies
