@@ -26,7 +26,7 @@ data WindowSize = WindowSize
     }
 instance Component WindowSize where type Storage WindowSize = Unique WindowSize
 
-data GameState = StartScreen | Playing | Done deriving Show
+newtype GameState = GameState State deriving Show
 instance Component GameState where type Storage GameState = Unique GameState
 
 newtype Image = Image Texture2D deriving Show

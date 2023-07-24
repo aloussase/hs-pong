@@ -8,6 +8,7 @@ module Pong.Entities
   , spawnRandomParticleWithAngle
   , spawnRandomParticlesWithAngle
   , type ParticleEntity
+  , type ButtonEntity
 )
 where
 
@@ -16,6 +17,8 @@ import           Pong.Components
 import           Raylib.Types     hiding (Image)
 import           Raylib.Util.Math (lerp)
 import           System.Random    (randomRIO)
+
+type ButtonEntity = (Image, Position, Size, ClickAction, Translatable)
 
 spawnButton :: Image -> Position -> Size -> ClickAction -> System' ()
 spawnButton image position size action =

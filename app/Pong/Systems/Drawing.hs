@@ -10,13 +10,15 @@ import           Apecs
 import           Raylib.Types         (Texture (texture'height, texture'width),
                                        Vector2 (..))
 
-import           Pong.Components
 import           Raylib.Core          (beginTextureMode, clearBackground,
                                        endTextureMode)
 import           Raylib.Core.Shapes   (drawCircle, drawRectangle)
 import           Raylib.Core.Textures (drawTexture, fade, loadRenderTexture,
                                        loadTextureFromImage)
 import           Raylib.Util.Colors   (black, white, yellow)
+
+import           Pong.Components
+import           Pong.Types
 
 drawPlayingState :: System' ()
 drawPlayingState = do
@@ -42,8 +44,12 @@ drawBall = cmapM_ $
 
 drawStartScreen :: System' ()
 drawStartScreen = do
-    liftIO $ clearBackground black
-    drawButtons
+    GameState state <- get global
+    case state of
+      StartScreen -> do
+        liftIO $ clearBackground black
+        drawButtons
+      _ -> return ()
 
 drawButtons :: System' ()
 drawButtons = cmapM_ $

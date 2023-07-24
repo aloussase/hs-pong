@@ -5,7 +5,9 @@ import           Raylib.Core
 import           Raylib.Util     (WindowResources, drawing)
 
 import           Pong.Components
+import           Pong.Systems    (StateTransition (..), transition)
 import qualified Pong.Systems    as Systems
+import           Pong.Types
 
 windowWidth :: Float
 windowWidth = 800
@@ -16,20 +18,21 @@ windowHeight = 500
 gameLoop :: System' ()
 gameLoop = do
     shouldClose <- liftIO windowShouldClose
-    (Resources wrs) <- get global
-    state <- get global
-    if shouldClose
-       then liftIO (closeWindow wrs)
-       else case state of
-                StartScreen -> drawing Systems.startScreen >> gameLoop
-                Playing     -> drawing Systems.playing >> gameLoop
-                Done        -> liftIO (closeWindow wrs)
+    Resources wrs <- get global
+    GameState state <- get global
+    case (shouldClose, state) of
+      (True, _)        -> liftIO (closeWindow wrs)
+      (_, Done)        -> liftIO (closeWindow wrs)
+      (_, StartScreen) -> drawing Systems.startScreen >> gameLoop
+      (_, Playing)     -> drawing Systems.playing >> gameLoop
 
 main :: IO ()
 main = do
     ws <- initWindow (round windowWidth) (round windowHeight) "HS Pong"
     w <- initWorld
     runWith w $ do
-        Systems.initialize ws windowWidth windowHeight
-        Systems.initializeStartScreen
+        set global (WindowSize windowWidth windowHeight)
+        set global (Resources ws)
+        set global (GameState StartScreen)
+        transition $ StateTransition @Done @StartScreen
         gameLoop
