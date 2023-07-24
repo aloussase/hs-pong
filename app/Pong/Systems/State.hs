@@ -52,3 +52,4 @@ instance HasTransition StateTransition Done StartScreen
 instance HasTransition StateTransition Playing GameOver
 instance HasTransition StateTransition GameOver StartScreen
 instance HasTransition StateTransition GameOver Done
+instance HasTransition StateTransition GameOver Playing

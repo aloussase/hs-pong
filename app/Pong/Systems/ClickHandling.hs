@@ -25,5 +25,6 @@ handleClicks = do
               (StartScreen, Navigate ToExit) -> transition $ StateTransition @StartScreen @Done
               (GameOver, Navigate ToStartScreen) -> transition $ StateTransition @GameOver @StartScreen
               (GameOver, Navigate ToExit) -> transition $ StateTransition @GameOver @Done
+              (GameOver, Navigate ToGame) -> transition $ StateTransition @GameOver @Playing
               _ -> return ()
 

@@ -33,6 +33,19 @@ drawStartScreen = do
 drawGameOverScreen :: System' ()
 drawGameOverScreen = do
     liftIO $ clearBackground black
+
+    let gameOverText = "Game Over"
+        fontSize = 30
+
+    ws <- get global
+    textWidth <- liftIO $ measureText gameOverText fontSize
+
+    liftIO $ drawText gameOverText
+                     (round (windowSizeWidth ws) `div` 2 - textWidth `div` 2)
+                     50
+                     fontSize
+                     white
+
     drawButtons
 
 drawPaddles :: System' ()

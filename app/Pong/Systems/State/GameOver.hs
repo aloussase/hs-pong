@@ -18,13 +18,19 @@ enter = do
         mid = windowSizeHeight ws / 2
 
     spawnButton "Start Screen"
-                (Position $ Vector2  x (mid - (fromIntegral height + 10)))
+                (Position $ Vector2  x (mid - fromIntegral height / 2 - fromIntegral height - 10))
                 (Size width height)
                 blue
                 (Navigate ToStartScreen)
 
+    spawnButton "Play Again"
+                (Position $ Vector2 x (mid - fromIntegral height / 2))
+                (Size width height)
+                green
+                (Navigate ToGame)
+
     spawnButton "Exit"
-                (Position $ Vector2  x (mid + 10))
+                (Position $ Vector2  x (mid + fromIntegral height / 2 + 10))
                 (Size width height)
                 red
                 (Navigate ToExit)
