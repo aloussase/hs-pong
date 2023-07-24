@@ -7,7 +7,6 @@ data State
     | Done
     deriving Show
 
-
 data Navigation
     = ToStartScreen
     | ToGame
@@ -19,3 +18,7 @@ data Intent
     | MoveDown
     | Navigate Navigation
     deriving Show
+
+data Sound
+    = ClankSound
+    deriving (Show, Eq, Ord)

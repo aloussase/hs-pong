@@ -8,11 +8,17 @@ import           Apecs
 import           Data.Monoid
 import           Data.Semigroup (Semigroup)
 import           Data.String    (IsString (..))
+import qualified Raylib.Types   as Rt
 import           Raylib.Types   (Color, KeyboardKey, Texture2D, Vector2)
 import           Raylib.Util    (WindowResources)
 
 import           Pong.Types
 
+
+newtype Sounds = Sounds [(Sound, Rt.Sound)]
+instance Monoid Sounds where mempty = Sounds []
+instance Semigroup Sounds where Sounds xs <> Sounds ys = Sounds $ xs ++ ys
+instance Component Sounds where type Storage Sounds = Global Sounds
 
 newtype Resources = Resources WindowResources
 instance Component Resources where type Storage Resources = Unique Resources
@@ -75,10 +81,13 @@ instance IsString Label where fromString = Label
 data Button = Button deriving Show
 instance Component Button where type Storage Button = Map Button
 
+newtype WantsToPlaySound = WantsToPlaySound Sound deriving Show
+instance Component WantsToPlaySound where type Storage WantsToPlaySound = Map WantsToPlaySound
+
 makeWorld "World" [ ''WindowSize, ''GameState, ''Image, ''Position, ''Size
                   , ''Resources, ''HasAction, ''Translatable, ''Paddle, ''HasUserInput
                   , ''Ball, ''Velocity, ''Particle, ''Lifetime, ''HasColor, ''HasTrail
-                  , ''Label, ''Button
+                  , ''Label, ''Button, ''Sounds, ''WantsToPlaySound
                   ]
 
 type System' a = System World a

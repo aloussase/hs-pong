@@ -8,6 +8,7 @@ module Pong.Systems
   , module Pong.Systems.CollisionDetection
   , module Pong.Systems.Particles
   , module Pong.Systems.State
+  , module Pong.Systems.Sound
   , startScreen
   , playing
   , gameOver
@@ -25,6 +26,7 @@ import           Pong.Systems.Drawing
 import           Pong.Systems.Hover
 import           Pong.Systems.Movement
 import           Pong.Systems.Particles
+import           Pong.Systems.Sound
 import           Pong.Systems.State
 import           Pong.Systems.UserInput
 
@@ -42,6 +44,7 @@ playing = do
     checkCollisionBallWalls
     updateParticles
     updateTrails
+    playSounds
     drawPlayingState
 
 gameOver :: System' ()

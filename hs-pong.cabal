@@ -19,17 +19,19 @@ executable hs-pong
   other-modules:
     Pong.Components
     Pong.Entities
+    Pong.Sounds
     Pong.Systems
     Pong.Systems.ClickHandling
+    Pong.Systems.Sound
     Pong.Systems.CollisionDetection
     Pong.Systems.Drawing
     Pong.Systems.Hover
     Pong.Systems.Movement
     Pong.Systems.Particles
     Pong.Systems.State
+    Pong.Systems.State.GameOver
     Pong.Systems.State.Playing
     Pong.Systems.State.StartScreen
-    Pong.Systems.State.GameOver
     Pong.Systems.UserInput
     Pong.Types
 

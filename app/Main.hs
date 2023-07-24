@@ -5,6 +5,7 @@ import           Raylib.Core
 import           Raylib.Util     (WindowResources, drawing)
 
 import           Pong.Components
+import           Pong.Sounds
 import           Pong.Systems    (StateTransition (..), transition)
 import qualified Pong.Systems    as Systems
 import           Pong.Types
@@ -32,6 +33,7 @@ main = do
     ws <- initWindow (round windowWidth) (round windowHeight) "HS Pong"
     w <- initWorld
     runWith w $ do
+        set global . Sounds =<< liftIO loadSounds
         set global (WindowSize windowWidth windowHeight)
         set global (Resources ws)
         set global (GameState StartScreen)

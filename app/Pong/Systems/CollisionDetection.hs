@@ -15,6 +15,7 @@ import           Raylib.Util.Math
 
 import           Pong.Components
 import           Pong.Entities
+import           Pong.Sounds
 import           Pong.Systems.State
 import           Pong.Types
 
@@ -48,5 +49,6 @@ checkCollisionBallPaddle =
                         angle = normalizedIntersect * pi
                         speed = magnitude $ Vector2 vx vy
                     spawnRandomParticles 50 position white
+                    playSound ClankSound
                     return $ Velocity $ Vector2 (speed * cos angle) (speed * (-(sin angle)))
                 else return velocity
