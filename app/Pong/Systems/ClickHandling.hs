@@ -13,15 +13,17 @@ import           Pong.Types
 
 handleClicks :: System' ()
 handleClicks = do
-    clickables :: [(Position, Size, ClickAction, Entity)] <- collect Just
-    forM_ clickables $ \(Position (Vector2 x y), Size width height, clickAction, ety) -> do
+    clickables :: [(Position, Size, HasAction)] <- collect Just
+    forM_ clickables $ \(Position (Vector2 x y), Size width height, HasAction intent) -> do
         let rect = Rectangle x y (fromIntegral width) (fromIntegral height)
         mousePosition <- liftIO getMousePosition
         clicked <- liftIO $ isMouseButtonReleased MouseButtonLeft
         GameState state <- get global
         when (checkCollisionPointRec mousePosition rect && clicked) $ do
-            case (state, clickAction) of
-              (StartScreen, WantsToStartGame) -> transition $ StateTransition @StartScreen @Playing
-              (StartScreen, WantsToExit) -> transition $ StateTransition @StartScreen @Done
+            case (state, intent) of
+              (StartScreen, Navigate ToGame) -> transition $ StateTransition @StartScreen @Playing
+              (StartScreen, Navigate ToExit) -> transition $ StateTransition @StartScreen @Done
+              (GameOver, Navigate ToStartScreen) -> transition $ StateTransition @GameOver @StartScreen
+              (GameOver, Navigate ToExit) -> transition $ StateTransition @GameOver @Done
               _ -> return ()
 

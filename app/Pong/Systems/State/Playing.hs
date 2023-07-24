@@ -37,4 +37,7 @@ enter = do
     set global $ GameState Playing
 
 exit :: System' ()
-exit = return ()
+exit = do
+    cmap $ \Paddle -> Not @PaddleEntity
+    cmap $ \Ball -> Not @BallEntity
+    cmap $ \Particle -> Not @ParticleEntity

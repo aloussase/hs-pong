@@ -8,7 +8,14 @@ data State
     deriving Show
 
 
+data Navigation
+    = ToStartScreen
+    | ToGame
+    | ToExit
+    deriving Show
+
 data Intent
     = MoveUp
     | MoveDown
+    | Navigate Navigation
     deriving Show

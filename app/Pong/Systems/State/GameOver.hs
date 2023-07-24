@@ -1,10 +1,7 @@
-module Pong.Systems.State.StartScreen (enter, exit) where
+module Pong.Systems.State.GameOver (enter, exit) where
 
 import           Apecs
-import           Raylib.Core
-import           Raylib.Core.Text
-import           Raylib.Core.Textures
-import           Raylib.Types         hiding (Image)
+import           Raylib.Types
 import           Raylib.Util.Colors
 
 import           Pong.Components
@@ -20,11 +17,11 @@ enter = do
         x =  windowSizeWidth ws / 2 - fromIntegral width / 2
         mid = windowSizeHeight ws / 2
 
-    spawnButton "Start"
+    spawnButton "Start Screen"
                 (Position $ Vector2  x (mid - (fromIntegral height + 10)))
                 (Size width height)
-                green
-                (Navigate ToGame)
+                blue
+                (Navigate ToStartScreen)
 
     spawnButton "Exit"
                 (Position $ Vector2  x (mid + 10))
@@ -32,7 +29,7 @@ enter = do
                 red
                 (Navigate ToExit)
 
-    set global $ GameState StartScreen
+    set global (GameState GameOver)
 
 exit :: System' ()
 exit = cmap $ \Button -> Not @ButtonEntity

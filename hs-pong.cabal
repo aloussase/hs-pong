@@ -27,8 +27,9 @@ executable hs-pong
     Pong.Systems.Movement
     Pong.Systems.Particles
     Pong.Systems.State
-    Pong.Systems.State.StartScreen
     Pong.Systems.State.Playing
+    Pong.Systems.State.StartScreen
+    Pong.Systems.State.GameOver
     Pong.Systems.UserInput
     Pong.Types
 

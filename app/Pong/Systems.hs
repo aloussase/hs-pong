@@ -10,6 +10,7 @@ module Pong.Systems
   , module Pong.Systems.State
   , startScreen
   , playing
+  , gameOver
 )
 where
 
@@ -30,7 +31,7 @@ import           Pong.Systems.UserInput
 startScreen :: System' ()
 startScreen = do
     drawStartScreen
-    hover
+    translateOnHover
     handleClicks
 
 playing :: System' ()
@@ -42,3 +43,9 @@ playing = do
     updateParticles
     updateTrails
     drawPlayingState
+
+gameOver :: System' ()
+gameOver = do
+    translateOnHover
+    handleClicks
+    drawGameOverScreen

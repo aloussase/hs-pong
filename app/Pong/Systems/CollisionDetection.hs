@@ -15,16 +15,23 @@ import           Raylib.Util.Math
 
 import           Pong.Components
 import           Pong.Entities
+import           Pong.Systems.State
+import           Pong.Types
 
 checkCollisionBallWalls :: System' ()
 checkCollisionBallWalls = cmapM $
-    \(Ball, position@(Position (Vector2 _ by)), Size _ bh, velocity@(Velocity (Vector2 vx vy))) -> do
+    \(Ball, position@(Position (Vector2 bx by)), Size bw bh, velocity@(Velocity (Vector2 vx vy))) -> do
         ws <- get global
         let wh = windowSizeHeight ws
+            ww = windowSizeWidth ws
             topCollision = by <= 0
             bottomCollision = by + fromIntegral bh >= wh
+            leftCollision = bx <= 0
+            rightCollision = bx + fromIntegral bw >= ww
         if topCollision || bottomCollision
         then return (Velocity $ Vector2 vx (vy * (-1)))
+        else if leftCollision || rightCollision
+        then transition (StateTransition @Playing @GameOver) >> return velocity
         else return velocity
 
 

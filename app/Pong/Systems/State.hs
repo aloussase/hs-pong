@@ -15,6 +15,7 @@ import           Raylib.Util.Colors
 
 import           Pong.Components
 import           Pong.Entities
+import qualified Pong.Systems.State.GameOver    as GameOver
 import qualified Pong.Systems.State.Playing     as Playing
 import qualified Pong.Systems.State.StartScreen as StartScreen
 import           Pong.Types
@@ -31,6 +32,10 @@ instance HasGameState Playing where
     enter _ = Playing.enter
     exit _ = Playing.exit
 
+instance HasGameState GameOver where
+    enter _ = GameOver.enter
+    exit _ = GameOver.exit
+
 instance HasGameState Done where
     enter _ = set global (GameState Done)
     exit _ = return ()
@@ -44,3 +49,6 @@ class HasTransition f (from :: State) (to :: State) where
 instance HasTransition StateTransition StartScreen Playing
 instance HasTransition StateTransition StartScreen Done
 instance HasTransition StateTransition Done StartScreen
+instance HasTransition StateTransition Playing GameOver
+instance HasTransition StateTransition GameOver StartScreen
+instance HasTransition StateTransition GameOver Done

@@ -25,6 +25,7 @@ gameLoop = do
       (_, Done)        -> liftIO (closeWindow wrs)
       (_, StartScreen) -> drawing Systems.startScreen >> gameLoop
       (_, Playing)     -> drawing Systems.playing >> gameLoop
+      (_, GameOver)    -> drawing Systems.gameOver >> gameLoop
 
 main :: IO ()
 main = do

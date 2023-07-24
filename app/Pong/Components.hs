@@ -38,8 +38,8 @@ instance Component Position where type Storage Position = Map Position
 data Size = Size Int Int deriving Show
 instance Component Size where type Storage Size = Map Size
 
-data ClickAction = WantsToStartGame | WantsToExit deriving Show
-instance Component ClickAction where type Storage ClickAction = Map ClickAction
+newtype HasAction = HasAction Intent deriving Show
+instance Component HasAction where type Storage HasAction = Map HasAction
 
 newtype Translatable = Translatable  { originalPosition :: Position } deriving Show
 instance Component Translatable where type Storage Translatable = Map Translatable
@@ -68,9 +68,17 @@ instance Component HasColor where type Storage HasColor = Map HasColor
 data HasTrail = HasTrail deriving Show
 instance Component HasTrail where type Storage HasTrail = Map HasTrail
 
+newtype Label = Label String deriving Show
+instance Component Label where type Storage Label = Map Label
+instance IsString Label where fromString = Label
+
+data Button = Button deriving Show
+instance Component Button where type Storage Button = Map Button
+
 makeWorld "World" [ ''WindowSize, ''GameState, ''Image, ''Position, ''Size
-                  , ''Resources, ''ClickAction, ''Translatable, ''Paddle, ''HasUserInput
+                  , ''Resources, ''HasAction, ''Translatable, ''Paddle, ''HasUserInput
                   , ''Ball, ''Velocity, ''Particle, ''Lifetime, ''HasColor, ''HasTrail
+                  , ''Label, ''Button
                   ]
 
 type System' a = System World a

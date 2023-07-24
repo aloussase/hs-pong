@@ -2,20 +2,18 @@ module Pong.Systems.Drawing
 (
     drawStartScreen
   , drawPlayingState
+  , drawGameOverScreen
 )
 where
 
 
 import           Apecs
-import           Raylib.Types         (Texture (texture'height, texture'width),
-                                       Vector2 (..))
-
-import           Raylib.Core          (beginTextureMode, clearBackground,
-                                       endTextureMode)
-import           Raylib.Core.Shapes   (drawCircle, drawRectangle)
-import           Raylib.Core.Textures (drawTexture, fade, loadRenderTexture,
-                                       loadTextureFromImage)
-import           Raylib.Util.Colors   (black, white, yellow)
+import           Raylib.Core
+import           Raylib.Core.Shapes
+import           Raylib.Core.Text
+import           Raylib.Core.Textures
+import           Raylib.Types
+import           Raylib.Util.Colors
 
 import           Pong.Components
 import           Pong.Types
@@ -26,6 +24,16 @@ drawPlayingState = do
     drawPaddles
     drawBall
     drawParticles
+
+drawStartScreen :: System' ()
+drawStartScreen = do
+    liftIO $ clearBackground black
+    drawButtons
+
+drawGameOverScreen :: System' ()
+drawGameOverScreen = do
+    liftIO $ clearBackground black
+    drawButtons
 
 drawPaddles :: System' ()
 drawPaddles = cmapM_ $
@@ -42,16 +50,15 @@ drawBall = cmapM_ $
     \(Ball, Position (Vector2 x y), Size width _) ->
         liftIO $ drawCircle (round x) (round y) (fromIntegral width) yellow
 
-drawStartScreen :: System' ()
-drawStartScreen = do
-    GameState state <- get global
-    case state of
-      StartScreen -> do
-        liftIO $ clearBackground black
-        drawButtons
-      _ -> return ()
-
 drawButtons :: System' ()
 drawButtons = cmapM_ $
-    \( Image texture, Position (Vector2 x y) ) ->
-        liftIO $ drawTexture texture (round x) (round y) white
+    \(Button, Position (Vector2 x y), Size width height, Label label, HasColor color) -> do
+        let r = Rectangle x y (fromIntegral width) (fromIntegral height)
+        liftIO $ drawRectangleRounded r 0.2 (-1) color
+        let fontSize = 30
+        textWidth <- liftIO $ measureText label fontSize
+        liftIO $ drawText label
+                          (round x + width `div` 2 - textWidth `div` 2)
+                          (round y + height `div` 2 - 10)
+                          fontSize
+                          white

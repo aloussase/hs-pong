@@ -1,4 +1,4 @@
-module Pong.Systems.Hover (hover) where
+module Pong.Systems.Hover (translateOnHover) where
 
 import           Control.Monad        (when)
 
@@ -11,8 +11,8 @@ import           Raylib.Util.Colors
 
 import           Pong.Components
 
-hover :: System' ()
-hover = cmapM $
+translateOnHover :: System' ()
+translateOnHover = cmapM $
     \(Size width height, Translatable originalPosition) -> do
         let (Position (Vector2 x y)) = originalPosition
             rect = Rectangle x y (fromIntegral width) (fromIntegral height)

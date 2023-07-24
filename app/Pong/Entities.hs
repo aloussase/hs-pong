@@ -9,20 +9,35 @@ module Pong.Entities
   , spawnRandomParticlesWithAngle
   , type ParticleEntity
   , type ButtonEntity
+  , type BallEntity
+  , type PaddleEntity
 )
 where
 
 import           Apecs
+import           Raylib.Types       hiding (Image)
+import           Raylib.Util.Colors
+import           Raylib.Util.Math   (lerp)
+import           System.Random      (randomRIO)
+
 import           Pong.Components
-import           Raylib.Types     hiding (Image)
-import           Raylib.Util.Math (lerp)
-import           System.Random    (randomRIO)
+import           Pong.Types
 
-type ButtonEntity = (Image, Position, Size, ClickAction, Translatable)
+type ButtonEntity = (Button, Label, Position, Size, HasAction, Translatable, HasColor)
 
-spawnButton :: Image -> Position -> Size -> ClickAction -> System' ()
-spawnButton image position size action =
-    newEntity_ (image, position, size, action, Translatable position)
+spawnButton :: Label -> Position -> Size -> Color -> Intent -> System' ()
+spawnButton label position size color action =
+    newEntity_
+        ( Button
+        , label
+        , position
+        , size
+        , HasAction action
+        , Translatable position
+        , HasColor color
+        )
+
+type PaddleEntity = (Paddle, Position, Size, HasUserInput)
 
 spawnPaddle :: Position -> Size -> HasUserInput -> System' ()
 spawnPaddle position size userInput = newEntity_ (Paddle, position, size, userInput)
