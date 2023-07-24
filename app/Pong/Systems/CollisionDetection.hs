@@ -1,0 +1,41 @@
+module Pong.Systems.CollisionDetection
+(
+    checkCollisionBallPaddle
+  , checkCollisionBallWalls
+)
+where
+
+import           Control.Monad      (when)
+
+import           Apecs
+import           Raylib.Core.Shapes
+import           Raylib.Types
+import           Raylib.Util.Math
+
+import           Pong.Components
+
+checkCollisionBallWalls :: System' ()
+checkCollisionBallWalls = cmapM $
+    \(Ball, position@(Position (Vector2 _ by)), Size _ bh, velocity@(Velocity (Vector2 vx vy))) -> do
+        ws <- get global
+        let wh = windowSizeHeight ws
+            topCollision = by <= 0
+            bottomCollision = by + fromIntegral bh >= wh
+        if topCollision || bottomCollision
+        then return (Velocity $ Vector2 vx (vy * (-1)))
+        else return velocity
+
+
+checkCollisionBallPaddle :: System' ()
+checkCollisionBallPaddle =
+    cmapM_ $ \(Paddle, Position (Vector2 px py), Size pw ph) ->
+        cmapM $ \(Ball, Position (Vector2 bx by), Size bw bh, velocity@(Velocity (Vector2 vx vy))) -> do
+            let br = Rectangle bx by (fromIntegral bw) (fromIntegral bh)
+                pr = Rectangle px py (fromIntegral pw) (fromIntegral ph)
+            if checkCollisionRecs br pr
+               then do
+                    let intersect = (py + fromIntegral ph / 2) - by
+                        normalizedIntersect = intersect / (fromIntegral ph / 2)
+                        angle = normalizedIntersect * pi
+                    return $ Velocity $ Vector2 (0.1 * cos angle) (0.1 * (-(sin angle)))
+                else return velocity

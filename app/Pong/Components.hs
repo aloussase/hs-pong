@@ -8,8 +8,10 @@ import           Apecs
 import           Data.Monoid
 import           Data.Semigroup (Semigroup)
 import           Data.String    (IsString (..))
-import           Raylib.Types   (Texture2D, Vector2)
+import           Raylib.Types   (KeyboardKey, Texture2D, Vector2)
 import           Raylib.Util    (WindowResources)
+
+import           Pong.Types
 
 
 newtype Resources = Resources WindowResources
@@ -42,10 +44,21 @@ instance Component ClickAction where type Storage ClickAction = Map ClickAction
 newtype Translatable = Translatable  { originalPosition :: Position } deriving Show
 instance Component Translatable where type Storage Translatable = Map Translatable
 
-type Button = (Image, Position, Size, ClickAction, Translatable)
+data Paddle = Paddle deriving Show
+instance Component Paddle where type Storage Paddle = Map Paddle
 
-makeWorld "World" [''WindowSize, ''GameState, ''Image, ''Position, ''Size
-                  , ''Resources, ''ClickAction, ''Translatable
+newtype HasUserInput = HasUserInput [(KeyboardKey, Intent)] deriving Show
+instance Component HasUserInput where type Storage HasUserInput = Map HasUserInput
+
+data Ball = Ball deriving Show
+instance Component Ball where type Storage Ball = Unique Ball
+
+newtype Velocity = Velocity Vector2 deriving Show
+instance Component Velocity where type Storage Velocity = Map Velocity
+
+makeWorld "World" [ ''WindowSize, ''GameState, ''Image, ''Position, ''Size
+                  , ''Resources, ''ClickAction, ''Translatable, ''Paddle, ''HasUserInput
+                  , ''Ball, ''Velocity
                   ]
 
 type System' a = System World a

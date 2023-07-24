@@ -4,15 +4,21 @@ module Pong.Systems
   , module Pong.Systems.Drawing
   , module Pong.Systems.Hover
   , module Pong.Systems.Initialize
+  , module Pong.Systems.UserInput
+  , module Pong.Systems.Movement
+  , module Pong.Systems.CollisionDetection
   , startScreen
   , playing
 )
 where
 
 import           Pong.Systems.ClickHandling
+import           Pong.Systems.CollisionDetection
 import           Pong.Systems.Drawing
 import           Pong.Systems.Hover
 import           Pong.Systems.Initialize
+import           Pong.Systems.Movement
+import           Pong.Systems.UserInput
 
 import           Pong.Components
 
@@ -23,6 +29,9 @@ startScreen = do
     handleClicks
 
 playing :: System' ()
-playing = pure ()
-
-
+playing = do
+    drawPlayingState
+    userInput
+    movement
+    checkCollisionBallPaddle
+    checkCollisionBallWalls

@@ -1,6 +1,6 @@
 module Pong.Systems.ClickHandling (handleClicks) where
 
-import           Control.Monad      (when)
+import           Control.Monad           (when)
 
 import           Apecs
 import           Raylib.Core
@@ -8,6 +8,7 @@ import           Raylib.Core.Shapes
 import           Raylib.Types
 
 import           Pong.Components
+import           Pong.Systems.Initialize
 
 handleClicks :: System' ()
 handleClicks = cmapM_ $
@@ -18,6 +19,6 @@ handleClicks = cmapM_ $
         when (checkCollisionPointRec mousePosition rect && clicked) $ do
             case clickAction of
               WantsToExit      -> set global Done
-              WantsToStartGame -> set global Playing
+              WantsToStartGame -> initializeGame
 
 

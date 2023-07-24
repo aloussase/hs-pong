@@ -19,11 +19,14 @@ executable hs-pong
   other-modules:
     Pong.Components
     Pong.Entities
+    Pong.Systems
     Pong.Systems.ClickHandling
     Pong.Systems.Drawing
     Pong.Systems.Hover
     Pong.Systems.Initialize
-    Pong.Systems
+    Pong.Systems.Movement
+    Pong.Systems.CollisionDetection
+    Pong.Systems.UserInput
     Pong.Types
 
   build-depends:
