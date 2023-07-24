@@ -8,7 +8,7 @@ import           Apecs
 import           Data.Monoid
 import           Data.Semigroup (Semigroup)
 import           Data.String    (IsString (..))
-import           Raylib.Types   (KeyboardKey, Texture2D, Vector2)
+import           Raylib.Types   (Color, KeyboardKey, Texture2D, Vector2)
 import           Raylib.Util    (WindowResources)
 
 import           Pong.Types
@@ -56,9 +56,18 @@ instance Component Ball where type Storage Ball = Unique Ball
 newtype Velocity = Velocity Vector2 deriving Show
 instance Component Velocity where type Storage Velocity = Map Velocity
 
+data Particle = Particle deriving Show
+instance Component Particle where type Storage Particle = Map Particle
+
+newtype Lifetime = Lifetime Float deriving Show
+instance Component Lifetime where type Storage Lifetime = Map Lifetime
+
+newtype HasColor = HasColor Color deriving Show
+instance Component HasColor where type Storage HasColor = Map HasColor
+
 makeWorld "World" [ ''WindowSize, ''GameState, ''Image, ''Position, ''Size
                   , ''Resources, ''ClickAction, ''Translatable, ''Paddle, ''HasUserInput
-                  , ''Ball, ''Velocity
+                  , ''Ball, ''Velocity, ''Particle, ''Lifetime, ''HasColor
                   ]
 
 type System' a = System World a

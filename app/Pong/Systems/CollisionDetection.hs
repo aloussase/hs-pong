@@ -10,9 +10,11 @@ import           Control.Monad      (when)
 import           Apecs
 import           Raylib.Core.Shapes
 import           Raylib.Types
+import           Raylib.Util.Colors
 import           Raylib.Util.Math
 
 import           Pong.Components
+import           Pong.Entities
 
 checkCollisionBallWalls :: System' ()
 checkCollisionBallWalls = cmapM $
@@ -29,7 +31,7 @@ checkCollisionBallWalls = cmapM $
 checkCollisionBallPaddle :: System' ()
 checkCollisionBallPaddle =
     cmapM_ $ \(Paddle, Position (Vector2 px py), Size pw ph) ->
-        cmapM $ \(Ball, Position (Vector2 bx by), Size bw bh, velocity@(Velocity (Vector2 vx vy))) -> do
+        cmapM $ \(Ball, position@(Position (Vector2 bx by)), Size bw bh, velocity@(Velocity (Vector2 vx vy))) -> do
             let br = Rectangle bx by (fromIntegral bw) (fromIntegral bh)
                 pr = Rectangle px py (fromIntegral pw) (fromIntegral ph)
             if checkCollisionRecs br pr
@@ -37,5 +39,7 @@ checkCollisionBallPaddle =
                     let intersect = (py + fromIntegral ph / 2) - by
                         normalizedIntersect = intersect / (fromIntegral ph / 2)
                         angle = normalizedIntersect * pi
-                    return $ Velocity $ Vector2 (0.1 * cos angle) (0.1 * (-(sin angle)))
+                        speed = magnitude $ Vector2 vx vy
+                    spawnRandomParticles 50 position white
+                    return $ Velocity $ Vector2 (speed * cos angle) (speed * (-(sin angle)))
                 else return velocity

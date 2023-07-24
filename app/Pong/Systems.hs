@@ -7,6 +7,7 @@ module Pong.Systems
   , module Pong.Systems.UserInput
   , module Pong.Systems.Movement
   , module Pong.Systems.CollisionDetection
+  , module Pong.Systems.Particles
   , startScreen
   , playing
 )
@@ -18,6 +19,7 @@ import           Pong.Systems.Drawing
 import           Pong.Systems.Hover
 import           Pong.Systems.Initialize
 import           Pong.Systems.Movement
+import           Pong.Systems.Particles
 import           Pong.Systems.UserInput
 
 import           Pong.Components
@@ -30,8 +32,9 @@ startScreen = do
 
 playing :: System' ()
 playing = do
-    drawPlayingState
     userInput
     movement
     checkCollisionBallPaddle
     checkCollisionBallWalls
+    updateParticles
+    drawPlayingState

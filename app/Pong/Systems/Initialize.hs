@@ -89,6 +89,6 @@ initializeGame = do
 
     spawnBall (Position (Vector2 bx by))
               (Size (round bw) (round bh))
-              (Velocity (Vector2 (-0.1) 0))
+              (Velocity (Vector2 (-300) 0))
 
     set global Playing
