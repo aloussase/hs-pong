@@ -65,9 +65,12 @@ instance Component Lifetime where type Storage Lifetime = Map Lifetime
 newtype HasColor = HasColor Color deriving Show
 instance Component HasColor where type Storage HasColor = Map HasColor
 
+data HasTrail = HasTrail deriving Show
+instance Component HasTrail where type Storage HasTrail = Map HasTrail
+
 makeWorld "World" [ ''WindowSize, ''GameState, ''Image, ''Position, ''Size
                   , ''Resources, ''ClickAction, ''Translatable, ''Paddle, ''HasUserInput
-                  , ''Ball, ''Velocity, ''Particle, ''Lifetime, ''HasColor
+                  , ''Ball, ''Velocity, ''Particle, ''Lifetime, ''HasColor, ''HasTrail
                   ]
 
 type System' a = System World a

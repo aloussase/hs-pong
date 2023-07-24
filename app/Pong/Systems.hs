@@ -37,4 +37,5 @@ playing = do
     checkCollisionBallPaddle
     checkCollisionBallWalls
     updateParticles
+    updateTrails
     drawPlayingState
